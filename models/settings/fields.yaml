@@ -1,0 +1,11 @@
+fields:
+    username:
+        span: left
+        label: bytepoets.basicauth::lang.settings.username
+        commentAbove: bytepoets.basicauth::lang.settings.username_comment
+
+    password:
+        span: right
+        type: password
+        label: bytepoets.basicauth::lang.settings.password
+        commentAbove: bytepoets.basicauth::lang.settings.password_comment
