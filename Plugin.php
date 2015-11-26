@@ -23,10 +23,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'BasicAuth',
+            'name' => 'BasicAuth',
             'description' => 'It protects the whole CMS with a Basic Auth form stored in session.',
-            'author'      => 'BYTEPOETS',
-            'icon'        => 'icon-lock'
+            'author' => 'BYTEPOETS',
+            'icon' => 'icon-lock'
         ];
     }
 
@@ -35,14 +35,14 @@ class Plugin extends PluginBase
         $isBasicAuthEnabled = Config::get('app.debug') || $this->app->environment() === 'staging' || $this->app->environment() === 'production';
         $isTesting = $this->app->environment() === 'testing';
         $isAuthenticated = !!strlen(Session::get(self::SESSION_KEY));
+        $isRunningInConsole = $this->app->runningInConsole();
         $username = Settings::instance()->username ?: Config::get('bytepoets.basicauth::username', false);
         $password = Settings::instance()->password ?: Config::get('bytepoets.basicauth::password', false);
 
-        if (!$isTesting && !$isAuthenticated && $isBasicAuthEnabled) {
+        if (!$isRunningInConsole && !$isTesting && !$isAuthenticated && $isBasicAuthEnabled) {
             if (Request::getUser() === $username && Request::getPassword() === $password) {
                 Session::set(self::SESSION_KEY, Request::getUser());
-            }
-            else {
+            } else {
                 header('WWW-Authenticate: Basic');
                 header('HTTP/1.0 401 Unauthorized');
                 echo 'Unauthorized';
@@ -55,12 +55,12 @@ class Plugin extends PluginBase
     {
         return [
             'location' => [
-                'label'       => 'Basic Auth',
+                'label' => 'Basic Auth',
                 'description' => 'Set the Username/Password for your Basic Auth Protection.',
-                'icon'        => 'icon-lock',
-                'order'       => 500,
-                'keywords'    => 'auth password protection',
-                'class'       => 'BYTEPOETS\BasicAuth\Models\Settings'
+                'icon' => 'icon-lock',
+                'order' => 500,
+                'keywords' => 'auth password protection',
+                'class' => 'BYTEPOETS\BasicAuth\Models\Settings'
             ]
         ];
     }
